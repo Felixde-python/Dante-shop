@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DANTE ELECTRONICS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f4f4f4;padding-bottom:90px}
+header{background:#ff6b00;color:#fff;padding:15px;position:sticky;top:0;z-index:10}
+header h1{font-size:22px}
+header p{font-size:13px;margin-top:4px}
+.search{margin:12px;background:#fff;border-radius:25px;padding:12px 15px;color:#888}
+.banner{background:#ff8c1a;color:#fff;margin:0 12px;border-radius:14px;padding:18px}
+.banner h2{font-size:20px}
+.banner button{background:#fff;border:none;padding:10px 16px;border-radius:20px;font-weight:bold;cursor:pointer;margin-top:10px}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:12px;background:#fff;white-space:nowrap}
+.cat{padding:9px 16px;border:1px solid #ddd;border-radius:20px;background:#fff;cursor:pointer;font-weight:600;font-size:13px}
+.cat.active{background:#0a8a2f;color:#fff;border-color:#0a8a2f}
+.brands{display:flex;gap:8px;overflow-x:auto;padding:0 10px 12px;background:#fff;white-space:nowrap}
+.brand{padding:8px 16px;border:1px solid #ddd;border-radius:20px;background:#fff;cursor:pointer;font-size:13px;font-weight:600}
+.brand.active{background:#ff7a00;color:#fff;border-color:#ff7a00}
+h2{padding:15px 15px 5px;font-size:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px}
+.card{background:#fff;border-radius:16px;padding:12px}
+.card img{width:100%;height:150px;object-fit:cover;border-radius:12px;background:#eee}
+.card h3{font-size:15px;margin:10px 0 5px;min-height:36px}
+.price{color:#0a8a2f;font-weight:bold;font-size:16px;margin-bottom:8px}
+.btn-row{display:flex;gap:6px}
+.add{flex:1;background:#ff7a00;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:bold;cursor:pointer}
+.wa{flex:1;background:#25D366;color:#fff;text-align:center;padding:10px;border-radius:10px;font-weight:bold;text-decoration:none;font-size:13px;display:flex;align-items:center;justify-content:center}
+.badge{font-size:11px;background:#e8f5e9;color:#0a8a2f;padding:3px 8px;border-radius:10px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px 0 18px;border-top:1px solid #eee}
+.bottom div{text-align:center;font-size:12px;color:#777}
+</style>
+</head>
+<body>
+<header><h1>DANTE ELECTRONICS</h1><p>Nairobi Rongai | 📞 0115703888 | Fast Delivery</p></header>
+<div class="search">🔍 Search Samsung, iPhone, Tecno...</div>
+<div class="banner"><h2>🔥 Samsung A16 - KSh 22,500</h2><p>Free delivery in Nairobi Rongai</p><button onclick="document.getElementById('grid').scrollIntoView()">Shop Now →</button></div>
+<div class="cats" id="cats"></div>
+<div class="brands" id="brands"></div>
+<h2>Featured Products</h2>
+<div class="grid" id="grid"></div>
+<div class="bottom"><div>🏠<br>Home</div><div>🛍️<br>Shop</div><div>❤️<br>Wishlist</div><div>🛒<br>Cart (<span id="cartCount">0</span>)</div></div>
+<script>
+var products=[
+{id:1,name:"Samsung Galaxy A16",cat:"Phones",brand:"Samsung",price:22500,img:"https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400"},
+{id:2,name:"iPhone 13",cat:"Phones",brand:"iPhone",price:68000,img:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"},
+{id:3,name:"Tecno Spark 20",cat:"Phones",brand:"Tecno",price:16500,img:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400"},
+{id:4,name:"Infinix Hot 40",cat:"Phones",brand:"Infinix",price:18000,img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400"},
+{id:5,name:"Redmi Note 13",cat:"Phones",brand:"Redmi",price:24500,img:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400"},
+{id:6,name:"Oraimo FreePods",cat:"Accessories",brand:"Oraimo",price:2500,img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400"},
+{id:7,name:"Type-C Fast Charger",cat:"Accessories",brand:"Generic",price:1200,img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400"},
+{id:8,name:"JBL Bluetooth Speaker",cat:"Audio",brand:"JBL",price:5500,img:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400"},
+{id:9,name:"Anker Soundcore Earbuds",cat:"Audio",brand:"Anker",price:4000,img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400"},
+{id:10,name:"Anker Power Bank 20000mAh",cat:"Power",brand:"Anker",price:4500,img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400"},
+{id:11,name:"Hisense 32\" Smart TV",cat:"Home",brand:"Hisense",price:21000,img:"https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=400"},
+{id:12,name:"Von Rechargeable Fan",cat:"Home",brand:"Von",price:3800,img:"https://images.unsplash.com/photo-1565151443833-29bf49a30c5c?w=400"},
+{id:13,name:"HP Laptop 15",cat:"Computing",brand:"HP",price:55000,img:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400"},
+{id:14,name:"SanDisk Flash 64GB",cat:"Computing",brand:"SanDisk",price:1200,img:"https://images.unsplash.com/photo-1618410320928-25228d811631?w=400"},
+{id:15,name:"PS5 Controller",cat:"Gaming",brand:"Sony",price:8500,img:"https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400"}
+];
+var cats=["All","Phones","Accessories","Audio","Power","Home","Computing","Gaming"];
+var brandsByCat={"All":["Samsung","iPhone","Tecno","Infinix","Redmi","Oraimo","Anker","JBL","Hisense","HP","Sony"],"Phones":["Samsung","iPhone","Tecno","Infinix","Redmi"],"Accessories":["Oraimo","Generic"],"Audio":["JBL","Anker","Oraimo","Sony"],"Power":["Anker","Oraimo","Generic"],"Home":["Hisense","Von","Samsung"],"Computing":["HP","Lenovo","Dell","SanDisk"],"Gaming":["Sony","Xbox","Generic"]};
+var activeCat="All",activeBrand="All",cart=[];
+function renderCats(){
+document.getElementById('cats').innerHTML=cats.map(function(c){return '<button class="cat '+(c===activeCat?'active':'')+'" onclick="setCat(\''+c+'\')">'+c+'</button>'}).join('');
+var brands=["All"].concat(brandsByCat[activeCat]);
+document.getElementById('brands').innerHTML=brands.map(function(b){return '<button class="brand '+(b===activeBrand?'active':'')+'" onclick="setBrand(\''+b+'\')">'+b+'</button>'}).join('');
+}
+function setCat(c){activeCat=c;activeBrand="All";renderCats();renderGrid();}
+function setBrand(b){activeBrand=b;renderCats();renderGrid();}
+function renderGrid(){
+var list=products.filter(function(p){return (activeCat==="All"||p.cat===activeCat)&&(activeBrand==="All"||p.brand===activeBrand)});
+document.getElementById('grid').innerHTML=list.map(function(p){
+var msg=encodeURIComponent("Hi DANTE, is "+p.name+" available?");
+return '<div class="card"><img src="'+p.img+'"><span class="badge">'+p.brand+' • '+p.cat+'</span><h3>'+p.name+'</h3><div class="price">KSh '+p.price.toLocaleString()+'</div><div class="btn-row"><button class="add" onclick="addToCart('+p.id+')">Add to Cart</button><a class="wa" href="https://wa.me/254115703888?text='+msg+'" target="_blank">WhatsApp</a></div></div>'
+}).join('');
+}
+function addToCart(id){var p=products.find(function(x){return x.id===id});cart.push(p);document.getElementById('cartCount').innerText=cart.length;alert(p.name+" added!");}
+renderCats();renderGrid();
+</script>
+</body>
+</html>
